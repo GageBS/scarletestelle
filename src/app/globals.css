@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   Scarlet Estelle — brand tokens
+   Change a color or font HERE and the whole site + studio follow.
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  /* palette — parchment + oxblood ink + blush + moss (placeholder until
+     Scarlet's palette images arrive) */
+  --color-parchment: #f3ece1;
+  --color-linen: #e9dfd0;
+  --color-cream: #fbf7f0;
+  --color-blush: #e8d2cd;
+  --color-rose: #c9a19b;
+  --color-ink: #2a1213;
+  --color-ink-soft: #5b4744;
+  --color-muted: #8a7570;
+  --color-scarlet: #8f1d21;
+  --color-wine: #5b1518;
+  --color-moss: #6f6b3a;
+  --color-moss-deep: #4f4c27;
+  --color-noir: #140e0d;
+  --color-rule: #d9ccbb;
+
+  /* type */
+  --font-display: var(--font-bodoni), "Bodoni Moda", Didot, "Times New Roman", serif;
+  --font-serif: var(--font-garamond), "EB Garamond", Garamond, Georgia, serif;
+  --font-gothic: var(--font-fraktur), "New Rocker", "Old English Text MT", serif;
+  --font-script: var(--font-scriptface), "Rinapelle Script", "Luxurious Script", "Snell Roundhand", cursive;
+  --font-sans: var(--font-jost), "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-scarlet);
+  color: var(--color-cream);
+}
+
+/* ── type helpers ─────────────────────────────────────────── */
+@utility label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+
+@utility script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@utility gothic {
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* film grain overlay — subtle analog texture on sections */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.07 0 0 0 0 0.07 0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+/* damask-like woven texture for the moss + blush bands (pure CSS) */
+@utility woven {
+  background-image:
+    radial-gradient(circle at 25% 25%, rgb(255 255 255 / 0.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 75% 75%, rgb(0 0 0 / 0.05) 0 2px, transparent 3px),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.025) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.03) 0 2px, transparent 2px 7px);
+  background-size: 22px 22px, 22px 22px, auto, auto;
+}
+
+/* polaroid / print frame */
+@utility print {
+  background: var(--color-cream);
+  padding: 0.6rem 0.6rem 2.4rem;
+  box-shadow:
+    0 1px 1px rgb(42 18 19 / 0.08),
+    0 12px 28px -12px rgb(42 18 19 / 0.35);
+}
+
+/* film strip edge */
+@utility filmstrip {
+  background: #0d0908;
+  padding: 1.1rem 0.45rem;
+  background-image:
+    repeating-linear-gradient(90deg, #f3ece1 0 7px, transparent 7px 18px),
+    repeating-linear-gradient(90deg, #f3ece1 0 7px, transparent 7px 18px);
+  background-size: 100% 6px, 100% 6px;
+  background-position: 0 5px, 0 calc(100% - 5px);
+  background-repeat: repeat-x;
+}
+
+/* link with drawn underline */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.4s var(--ease-soft);
+  &:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+}
+
+/* reveal-on-scroll (see components/site/reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* hide scrollbar on horizontal swipers but keep them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* form controls used by the public inquiry form */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-rose);
+  padding: 0.65rem 0.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  color: var(--color-ink);
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.field:focus {
+  border-bottom-color: var(--color-scarlet);
+}
+.field::placeholder {
+  color: var(--color-muted);
+  font-style: italic;
+}
+textarea.field {
+  border: 1px solid var(--color-rose);
+  padding: 0.8rem;
+  min-height: 8rem;
+  resize: vertical;
+}
+textarea.field:focus {
+  border-color: var(--color-scarlet);
+}
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%232a1213' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.25rem center;
+  padding-right: 1.5rem;
+}
+
+/* contract / document prose */
+.doc-prose h1,
+.doc-prose h2,
+.doc-prose h3 {
+  font-family: var(--font-display);
+  margin: 1.4em 0 0.5em;
+  line-height: 1.2;
+}
+.doc-prose h1 {
+  font-size: 1.6rem;
+}
+.doc-prose h2 {
+  font-size: 1.25rem;
+}
+.doc-prose h3 {
+  font-size: 1.05rem;
+}
+.doc-prose p {
+  margin: 0.7em 0;
+}
+.doc-prose ul {
+  list-style: disc;
+  padding-left: 1.3em;
+  margin: 0.7em 0;
+}
+.doc-prose ol {
+  list-style: decimal;
+  padding-left: 1.3em;
+  margin: 0.7em 0;
+}
+.doc-prose strong {
+  font-weight: 600;
+}
+
+/* hand-inked edge on script + blackletter (filter defined in components/brand.tsx) */
+.inked {
+  filter: url(#se-ink);
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="heroZoom"] {
+    animation: none !important;
+  }
+}
+
+/* studio: grid/flex children may shrink so long names truncate instead of widening the page on phones */
+.studio-main .grid > *,
+.studio-main section,
+.studio-main .flex > .min-w-0 {
+  min-width: 0;
+}
+.studio-main {
+  overflow-wrap: anywhere;
+}
